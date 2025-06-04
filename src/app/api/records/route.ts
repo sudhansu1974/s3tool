@@ -1,11 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-    queryRecords,
-    getTransactions,
-    addToReport,
-    removeFromReport,
-    getReportRecords,
-} from '@/lib/db';
+import { queryRecords, addToReport, removeFromReport } from '@/lib/db';
 
 // GET /api/records?caseNumber=&startDate=&endDate=
 export async function GET(request: Request) {
@@ -43,30 +37,6 @@ export async function GET(request: Request) {
     }
 }
 
-// GET /api/records/transactions?filename=
-export async function getTransactionsRoute(request: Request) {
-    try {
-        const { searchParams } = new URL(request.url);
-        const filename = searchParams.get('filename');
-
-        if (!filename) {
-            return NextResponse.json(
-                { error: 'Filename is required' },
-                { status: 400 }
-            );
-        }
-
-        const transactions = await getTransactions(filename);
-        return NextResponse.json(transactions);
-    } catch (error) {
-        console.error('Error fetching transactions:', error);
-        return NextResponse.json(
-            { error: 'Failed to fetch transactions' },
-            { status: 500 }
-        );
-    }
-}
-
 // POST /api/records/report
 export async function POST(request: Request) {
     try {
@@ -85,20 +55,6 @@ export async function POST(request: Request) {
         console.error('Error adding to report:', error);
         return NextResponse.json(
             { error: 'Failed to add to report' },
-            { status: 500 }
-        );
-    }
-}
-
-// GET /api/records/report
-export async function getReportRoute() {
-    try {
-        const records = await getReportRecords();
-        return NextResponse.json(records);
-    } catch (error) {
-        console.error('Error fetching report records:', error);
-        return NextResponse.json(
-            { error: 'Failed to fetch report records' },
             { status: 500 }
         );
     }

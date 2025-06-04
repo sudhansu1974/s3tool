@@ -556,11 +556,14 @@ export default function QueryPage() {
                             <Button
                                 variant="outline"
                                 onClick={clearAllFilters}
-                                className="h-8 text-sm"
+                                className="h-8 text-sm border-indigo-200 text-indigo-700 hover:bg-indigo-50"
                             >
                                 Clear Filters
                             </Button>
-                            <Button onClick={handleSearch} className="h-8 text-sm">
+                            <Button
+                                onClick={handleSearch}
+                                className="h-8 text-sm bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-sm"
+                            >
                                 Filter
                             </Button>
                         </div>
@@ -675,7 +678,7 @@ export default function QueryPage() {
 
             {/* Filename Edit Dialog */}
             <Dialog open={isFilenameDialogOpen} onOpenChange={setIsFilenameDialogOpen}>
-                <DialogContent>
+                <DialogContent className="bg-white border border-gray-200 shadow-xl">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-semibold text-indigo-900">
                             Edit Filename
@@ -725,15 +728,15 @@ export default function QueryPage() {
                     setIsTransactionsLoading(false);
                 }
             }}>
-                <DialogContent className="max-w-4xl">
+                <DialogContent className="max-w-5xl bg-white border border-gray-200 shadow-xl">
                     <DialogHeader>
-                        <DialogTitle className="text-lg font-semibold text-indigo-900">
+                        <DialogTitle className="text-lg font-semibold text-indigo-900 pr-8">
                             All Transactions for Filename
                         </DialogTitle>
                     </DialogHeader>
                     <div className="py-4">
                         <div className="relative">
-                            <div className="sticky top-0 z-10 bg-white">
+                            <div className="sticky top-0 z-10 bg-white border rounded-t-lg">
                                 <Table className="table-fixed">
                                     <TableHeader>
                                         <TableRow className="bg-gradient-to-r from-indigo-50 to-indigo-100 border-b border-indigo-200">
@@ -747,7 +750,7 @@ export default function QueryPage() {
                                 </Table>
                             </div>
 
-                            <div className="max-h-[400px] overflow-y-auto">
+                            <div className="max-h-[400px] overflow-y-auto bg-white border-x border-b rounded-b-lg">
                                 <Table className="table-fixed">
                                     <TableBody>
                                         {isTransactionsLoading ? (
@@ -790,6 +793,14 @@ export default function QueryPage() {
                             </div>
                         </div>
                     </div>
+                    <DialogFooter>
+                        <Button
+                            onClick={() => setIsTransactionsDialogOpen(false)}
+                            className="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-sm"
+                        >
+                            Close
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </div>

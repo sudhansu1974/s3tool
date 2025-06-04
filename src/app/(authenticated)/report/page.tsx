@@ -375,7 +375,7 @@ export default function ReportPage() {
 
             {/* Filename Edit Dialog */}
             <Dialog open={isFilenameDialogOpen} onOpenChange={setIsFilenameDialogOpen}>
-                <DialogContent>
+                <DialogContent className="bg-white border border-gray-200 shadow-xl">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-semibold text-indigo-900">
                             Edit Filename
