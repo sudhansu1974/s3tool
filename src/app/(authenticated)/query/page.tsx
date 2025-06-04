@@ -523,12 +523,12 @@ export default function QueryPage() {
                 <div className="space-y-4">
                     <h2 className="text-lg font-semibold text-indigo-900">Search Filters</h2>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        {/* Case Number */}
+                        {/* Search Filename */}
                         <div className="space-y-1">
-                            <Label htmlFor="caseNumber" className="text-sm">Case Number</Label>
+                            <Label htmlFor="caseNumber" className="text-sm">Search filename</Label>
                             <Input
                                 id="caseNumber"
-                                placeholder="Enter case number..."
+                                placeholder="Enter filename..."
                                 value={filters.caseNumber}
                                 onChange={(e) => setFilters(prev => ({ ...prev, caseNumber: e.target.value }))}
                                 className="h-8 text-sm"
