@@ -111,6 +111,49 @@ body {
     background-color: white;
 }
 
+/* Input and Select styling fixes */
+input[type='text'] {
+    background-color: white !important;
+    border: 1px solid hsl(var(--border));
+}
+
+input[type='text']:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+/* Select dropdown styling */
+[data-radix-select-content] {
+    background-color: white !important;
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+        0 4px 6px -2px rgb(0 0 0 / 0.05);
+    z-index: 60;
+}
+
+[data-radix-select-item] {
+    background-color: white;
+}
+
+[data-radix-select-item]:hover,
+[data-radix-select-item][data-highlighted] {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+}
+
+/* Select trigger styling */
+[data-radix-select-trigger] {
+    background-color: white !important;
+    border: 1px solid hsl(var(--border));
+}
+
+[data-radix-select-trigger]:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
 /* Button hover improvements */
 .hover\:from-indigo-700:hover {
     background-image: linear-gradient(to right, rgb(67 56 202), rgb(55 48 163));

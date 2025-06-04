@@ -61,7 +61,7 @@ const formatInput = (value: string, type: 'date' | 'time'): string => {
     }
 };
 
-const SimpleInput = ({
+const SimpleInput = React.memo(({
     placeholder,
     className,
     onValueChange,
@@ -79,12 +79,14 @@ const SimpleInput = ({
     const [value, setValue] = React.useState(initialValue);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    // Update local state when initialValue changes
+    // Update local state when initialValue changes, but avoid unnecessary updates
     React.useEffect(() => {
-        setValue(initialValue);
+        if (initialValue !== value) {
+            setValue(initialValue);
+        }
     }, [initialValue]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         let newValue = e.target.value;
 
         if (type === 'date' || type === 'time') {
@@ -93,9 +95,9 @@ const SimpleInput = ({
 
         setValue(newValue);
         onValueChange(newValue);
-    };
+    }, [type, onValueChange]);
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         // Allow backspace, delete, tab, escape, enter, left arrow, right arrow, up arrow, down arrow, home, end
         if ([8, 9, 27, 13, 46, 37, 39, 38, 40, 35, 36].indexOf(e.keyCode) !== -1 ||
             // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+Z
@@ -113,7 +115,7 @@ const SimpleInput = ({
                 e.preventDefault();
             }
         }
-    };
+    }, [type]);
 
     return (
         <input
@@ -124,10 +126,12 @@ const SimpleInput = ({
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             maxLength={maxLength}
-            className={`flex h-8 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className || ''}`}
+            className={`flex h-8 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 ${className || ''}`}
         />
     );
-};
+});
+
+SimpleInput.displayName = 'SimpleInput';
 
 const DateTimeInput = React.memo(({
     dateType,
@@ -167,8 +171,8 @@ const DateTimeInput = React.memo(({
             ...prev,
             [dateType]: {
                 ...prev[dateType],
-                month: month.padStart(2, '0'),
-                day: day.padStart(2, '0')
+                month: month,
+                day: day
             }
         }));
     }, [dateType, setFilters]);
@@ -183,9 +187,9 @@ const DateTimeInput = React.memo(({
             ...prev,
             [dateType]: {
                 ...prev[dateType],
-                hours: hours.padStart(2, '0'),
-                minutes: minutes.padStart(2, '0'),
-                seconds: seconds.padStart(2, '0')
+                hours: hours,
+                minutes: minutes,
+                seconds: seconds
             }
         }));
     }, [dateType, setFilters]);
@@ -201,15 +205,13 @@ const DateTimeInput = React.memo(({
     }, [dateType, setFilters]);
 
     // Format current values for display
-    const currentDateValue = date.month && date.day
-        ? `${date.month.padStart(2, '0')}/${date.day.padStart(2, '0')}`
+    const currentDateValue = date.month || date.day
+        ? `${date.month || ''}/${date.day || ''}`.replace(/\/$/, '')
         : '';
 
-    const currentTimeValue = date.hours && date.minutes && date.seconds
-        ? `${date.hours.padStart(2, '0')}:${date.minutes.padStart(2, '0')}:${date.seconds.padStart(2, '0')}`
-        : date.hours && date.minutes
-            ? `${date.hours.padStart(2, '0')}:${date.minutes.padStart(2, '0')}`
-            : '';
+    const currentTimeValue = date.hours || date.minutes || date.seconds
+        ? `${date.hours || ''}:${date.minutes || ''}:${date.seconds || ''}`.replace(/:+$/, '')
+        : '';
 
     return (
         <div className="space-y-1">
@@ -356,14 +358,14 @@ export default function QueryPage() {
         if (!date.day || !date.month || !date.year) return null;
 
         const year = date.year;
-        const month = date.month.padStart(2, '0');
-        const day = date.day.padStart(2, '0');
+        const month = date.month.toString().padStart(2, '0');
+        const day = date.day.toString().padStart(2, '0');
 
         // If all time components are present, use them
         if (date.hours && date.minutes && date.seconds) {
-            const hours = date.hours.padStart(2, '0');
-            const minutes = date.minutes.padStart(2, '0');
-            const seconds = date.seconds.padStart(2, '0');
+            const hours = date.hours.toString().padStart(2, '0');
+            const minutes = date.minutes.toString().padStart(2, '0');
+            const seconds = date.seconds.toString().padStart(2, '0');
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
 
