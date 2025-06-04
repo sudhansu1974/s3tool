@@ -517,8 +517,20 @@ export default function QueryPage() {
         }
     };
 
+    // Handle keyboard events
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSearch();
+        }
+    };
+
     return (
-        <div className="container mx-auto p-4 space-y-4">
+        <div
+            className="container mx-auto p-4 space-y-4"
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+        >
             <Toaster />
             {/* Filters section */}
             <Card className="p-4">
