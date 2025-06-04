@@ -141,7 +141,7 @@ export default function ReportPage() {
             }
 
             // Add borders only to cells with data
-            worksheet.eachRow((row, rowNumber) => {
+            worksheet.eachRow((row) => {
                 // Only apply borders to the first 5 columns (our data columns)
                 for (let col = 1; col <= 5; col++) {
                     const cell = row.getCell(col);
@@ -158,7 +158,6 @@ export default function ReportPage() {
             worksheet.columns.forEach((column, index) => {
                 if (index < 5) { // Only for our data columns
                     let maxLength = 0;
-                    const columnLetter = String.fromCharCode(65 + index); // A, B, C, D, E
 
                     worksheet.eachRow((row) => {
                         const cell = row.getCell(index + 1);
