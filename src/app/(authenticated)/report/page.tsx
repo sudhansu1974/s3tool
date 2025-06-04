@@ -271,14 +271,14 @@ export default function ReportPage() {
                             </Button>
                         </div>
                         <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 shadow-sm">
-                            <Table>
+                            <Table className="table-fixed">
                                 <TableHeader>
                                     <TableRow className="border-b border-indigo-200">
+                                        <TableHead className="h-10 w-[50px] text-indigo-900 font-medium">Action</TableHead>
                                         <TableHead className="h-10 text-indigo-900 font-medium w-16">Type</TableHead>
                                         <TableHead className="h-10 text-indigo-900 font-medium w-32">IP Address</TableHead>
-                                        <TableHead className="h-10 text-indigo-900 font-medium w-32">UTC Date</TableHead>
+                                        <TableHead className="h-10 text-indigo-900 font-medium w-36">UTC Date</TableHead>
                                         <TableHead className="h-10 text-indigo-900 font-medium">Filename</TableHead>
-                                        <TableHead className="h-10 w-[50px] text-indigo-900 font-medium"></TableHead>
                                     </TableRow>
                                 </TableHeader>
                             </Table>
@@ -307,13 +307,23 @@ export default function ReportPage() {
                                             key={item.id}
                                             className={item.IsYellow ? "bg-yellow-100 hover:bg-yellow-200" : "hover:bg-gray-50"}
                                         >
+                                            <TableCell className="w-[50px]">
+                                                <button
+                                                    onClick={() => handleRemove(item.id)}
+                                                    className="p-1 hover:bg-red-50 rounded-full transition-colors"
+                                                >
+                                                    <X className="h-4 w-4 text-red-500 hover:text-red-700" />
+                                                </button>
+                                            </TableCell>
                                             <TableCell className="w-16">{item.Type}</TableCell>
                                             <TableCell className="w-32">{item.IP}</TableCell>
-                                            <TableCell className="w-32">
-                                                {new Date(item.UTC).toLocaleString('en-US', {
+                                            <TableCell className="w-36 whitespace-nowrap">
+                                                {new Date(item.UTC).toLocaleDateString('en-US', {
                                                     month: '2-digit',
                                                     day: '2-digit',
                                                     year: '2-digit',
+                                                    timeZone: 'UTC'
+                                                })} {new Date(item.UTC).toLocaleTimeString('en-US', {
                                                     hour: '2-digit',
                                                     minute: '2-digit',
                                                     second: '2-digit',
@@ -327,14 +337,6 @@ export default function ReportPage() {
                                                     className="text-indigo-600 hover:text-indigo-800 hover:underline focus:outline-none"
                                                 >
                                                     {item.NewFilename || item.FileName}
-                                                </button>
-                                            </TableCell>
-                                            <TableCell>
-                                                <button
-                                                    onClick={() => handleRemove(item.id)}
-                                                    className="p-1 hover:bg-indigo-50 rounded-full transition-colors"
-                                                >
-                                                    <X className="h-4 w-4 text-indigo-500" />
                                                 </button>
                                             </TableCell>
                                         </TableRow>
